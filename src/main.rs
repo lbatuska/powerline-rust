@@ -14,6 +14,8 @@ const TERM_GREEN: &str = r#"\[\033[32m\]"#;
 const TERM_RED: &str = r#"\[\033[31m\]"#;
 const TERM_ORANGE: &str = r#"\[\e[38;5;208m\]"#;
 const TERM_RESET: &str = r#"\[\033[0m\]"#;
+const TERM_BLUE: &str = r#"\[\033[34m\]"#;
+const TERM_BRIGHT_BLUE: &str = r#"\[\033[94m\]"#;
 
 async fn rust_version() -> String {
     match Command::new("rustc").output().await {
@@ -53,6 +55,19 @@ async fn main() {
     let path_res_handle = tokio::spawn(get_rel_or_abs_path(pwd.clone()));
 
     let mut line_buffer: String = String::with_capacity(300);
+
+    if let Ok(virtual_env_path) = env::var("VIRTUAL_ENV") {
+        let path = Path::new(&virtual_env_path);
+
+        if let Some(venv_name) = path.file_name().and_then(|name| name.to_str()) {
+            // Efficient string building in one go
+            line_buffer.push_str(TERM_BRIGHT_BLUE);
+            line_buffer.push('(');
+            line_buffer.push_str(venv_name);
+            line_buffer.push(')');
+            line_buffer.push_str(TERM_RESET);
+        }
+    }
 
     let last_return = args()
         .nth(1)
