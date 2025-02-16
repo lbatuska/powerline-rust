@@ -60,11 +60,22 @@ async fn main() {
         let path = Path::new(&virtual_env_path);
 
         if let Some(venv_name) = path.file_name().and_then(|name| name.to_str()) {
-            // Efficient string building in one go
             line_buffer.push_str(TERM_BRIGHT_BLUE);
             line_buffer.push('(');
             line_buffer.push_str(venv_name);
             line_buffer.push(')');
+            line_buffer.push_str(TERM_RESET);
+        }
+    }
+
+    if let Ok(container_id) = env::var("CONTAINER_ID") {
+        let path = Path::new(&container_id);
+
+        if let Some(venv_name) = path.file_name().and_then(|name| name.to_str()) {
+            line_buffer.push_str(TERM_BRIGHT_BLUE);
+            line_buffer.push('<');
+            line_buffer.push_str(venv_name);
+            line_buffer.push('>');
             line_buffer.push_str(TERM_RESET);
         }
     }
