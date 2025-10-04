@@ -116,7 +116,7 @@ async fn main() {
     }
     line_buffer.push(usr_prompt);
 
-    println!(r#"export PS1="{}""#, line_buffer);
+    println!("{}", line_buffer);
     return;
 }
 
