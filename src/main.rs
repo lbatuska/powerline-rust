@@ -34,16 +34,7 @@ async fn main() {
     let git_stat_handle: Option<JoinHandle<String>> = if do_git {
         Some(tokio::spawn(async {
             // Start timing the git_stats execution
-            let start_time = Instant::now();
             let result = git_stats(pwd_clone).await;
-
-            let elapsed_time = start_time.elapsed();
-
-            // If it took longer than 1 second, set the environment variable
-            if elapsed_time > Duration::from_millis(500) {
-                println!(r#"export SKIP_GIT_STATUS="asd";"#)
-            }
-
             result
         }))
     } else {
