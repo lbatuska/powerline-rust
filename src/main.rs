@@ -47,6 +47,12 @@ async fn main() {
 
     let mut line_buffer: String = String::with_capacity(300);
 
+    if env::var("FOAM_SRC").is_ok() {
+        line_buffer.push_str(TERM_BRIGHT_BLUE);
+        line_buffer.push_str("[FOAM]");
+        line_buffer.push_str(TERM_RESET);
+    }
+
     if let Ok(virtual_env_path) = env::var("VIRTUAL_ENV") {
         let path = Path::new(&virtual_env_path);
 
